@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El meu torn</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+</head>
+<body class="turno-body">
+  <div class="container turno-container">
+    <header>
+      <h1>El seu torn</h1>
+    </header>
+
+    <main class="turno-content">
+      <div class="ticket-card">
+        <div class="ticket-header">
+          <h2>IES MARÍA ENRÍQUEZ</h2>
+          <p class="ticket-date" id="fecha"></p>
+        </div>
+      
+        <div class="ticket-body">
+          <div class="ticket-turno">
+            <div class="label">TORN</div>
+            <div class="value" id="turno-value">-</div>
+          </div>
+      
+          <div class="ticket-pin">
+            <div class="label">PIN</div>
+            <div class="value pin" id="pin-value">----</div>
+          </div>
+      
+          <div class="ticket-tramite">
+            <div class="label">Tràmit</div>
+            <div class="value small" id="tramite-value">-</div>
+          </div>
+        </div>
+      
+        <div class="ticket-footer">
+          <p>Mostre aquest ticket quan el criden</p>
+        </div>
+      </div>
+
+      <button id="btn-descargar" class="btn-download">
+        <span>📥</span> Descarregar PDF
+      </button>
+
+      <div class="estado-info">
+        <p id="estado-text">Espere a que el criden</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/turno.js"></script>
+</body>
+</html>

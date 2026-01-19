@@ -1,0 +1,550 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-naranja: #C65D3B;
+  --color-beige: #D4C5A0;
+  --color-turquesa: #5CA5A5;
+  --color-oscuro: #1a1a1a;
+  --color-gris: #666;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+  background: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding-bottom: 30px;
+  border-bottom: 3px solid var(--color-turquesa);
+}
+
+.logo {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: var(--color-oscuro);
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+header p {
+  font-size: 1.3rem;
+  color: var(--color-gris);
+  font-weight: 400;
+}
+
+.tramites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.tramite-card {
+  background: white;
+  border: 3px solid var(--color-turquesa);
+  border-radius: 12px;
+  padding: 50px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ajuste para pantallas de escritorio (táctiles) */
+@media (min-width: 769px) and (max-width: 1399px) {
+  .tramite-card {
+    padding: 50px 35px;
+  }
+
+  .tramite-nombre {
+    font-size: 2rem;
+  }
+}
+
+.tramite-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--color-beige) 0%, var(--color-turquesa) 100%);
+  transform: translateY(-6px);
+  transition: transform 0.3s ease;
+}
+
+.tramite-card:hover::before {
+  transform: translateY(0);
+}
+
+.tramite-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(92, 165, 165, 0.2);
+  border-color: var(--color-beige);
+}
+
+.tramite-card:active {
+  transform: translateY(-4px);
+}
+
+.tramite-nombre {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-turquesa);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.tramite-codigo {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-gris);
+  letter-spacing: 1px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.8rem;
+  color: var(--color-turquesa);
+  padding: 60px 20px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.error, .no-tramites {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #e74c3c;
+  padding: 40px 20px;
+}
+
+.no-tramites {
+  color: var(--color-gris);
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+  padding-top: 30px;
+  border-top: 2px solid #e9ecef;
+}
+
+footer p {
+  font-size: 1.2rem;
+  color: var(--color-gris);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 25px;
+  }
+
+  .logo {
+    max-width: 280px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  header p {
+    font-size: 1.1rem;
+  }
+
+  .tramites-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .tramite-card {
+    min-height: 150px;
+    padding: 30px 20px;
+  }
+
+  .tramite-nombre {
+    font-size: 2rem;
+  }
+
+  .tramite-codigo {
+    font-size: 1.2rem;
+  }
+}
+
+/* Para pantallas táctiles grandes (kiosco) */
+@media (min-width: 1400px) {
+  .logo {
+    max-width: 500px;
+  }
+
+  header h1 {
+    font-size: 3rem;
+  }
+
+  header p {
+    font-size: 1.6rem;
+  }
+
+  .tramite-card {
+    min-height: 240px;
+    padding: 50px;
+  }
+
+  .tramite-nombre {
+    font-size: 2.5rem;
+  }
+
+  .tramite-codigo {
+    font-size: 1.8rem;
+  }
+
+  footer p {
+    font-size: 1.5rem;
+  }
+}
+
+/* === PANTALLA QR === */
+
+.qr-body {
+  background: linear-gradient(135deg, rgba(92, 165, 165, 0.1) 0%, rgba(212, 197, 160, 0.1) 100%), white;
+  padding: 15px 0;
+}
+
+.qr-container {
+  max-width: 900px;
+}
+
+.qr-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.turno-info {
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 20px 40px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.turno-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.turno-numero {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pin-label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  opacity: 0.9;
+}
+
+.pin-numero {
+  font-size: 2.2rem;
+  font-weight: bold;
+  letter-spacing: 6px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.qr-section {
+  text-align: center;
+}
+
+.qr-instruction {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+#qrcode {
+  display: inline-block;
+  padding: 15px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+#qrcode img {
+  display: block;
+  width: 220px !important;
+  height: 220px !important;
+}
+
+.timer-section {
+  text-align: center;
+  width: 100%;
+}
+
+#timer-text {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+#countdown {
+  font-weight: bold;
+  color: #667eea;
+  font-size: 1.2rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+  
+/* Responsive QR */
+@media (max-width: 768px) {
+  .turno-numero {
+    font-size: 2.8rem;
+  }
+
+  .pin-numero {
+    font-size: 1.8rem;
+    letter-spacing: 5px;
+  }
+
+  #qrcode {
+    padding: 15px;
+  }
+
+  #qrcode img {
+    width: 180px !important;
+    height: 180px !important;
+  }
+
+  .qr-instruction {
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+  }
+}
+
+
+/* === PANTALLA TURNO MÓVIL === */
+
+.turno-body {
+  background: #f5f5f5;
+  padding: 20px 10px;
+}
+
+.turno-container {
+  max-width: 500px;
+  padding: 20px;
+  background: #fff;
+}
+
+.turno-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ticket-card {
+  background: white;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-header {
+  background: linear-gradient(135deg, var(--color-turquesa) 0%, var(--color-beige) 100%);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.ticket-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.ticket-date {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.ticket-body {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.ticket-turno,
+.ticket-pin,
+.ticket-tramite {
+  margin-bottom: 25px;
+}
+
+.ticket-body .label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.ticket-body .value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.ticket-body .value.pin {
+  letter-spacing: 5px;
+  color: var(--color-turquesa);
+}
+
+.ticket-body .value.small {
+  font-size: 1.3rem;
+}
+
+.ticket-footer {
+  background: #f8f8f8;
+  padding: 15px;
+  text-align: center;
+  border-top: 2px dashed #ccc;
+}
+
+.ticket-footer p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.btn-download {
+  background: linear-gradient(135deg, var(--color-turquesa) 0%, var(--color-beige) 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(92, 165, 165, 0.3);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(92, 165, 165, 0.4);
+}
+
+.btn-download:active {
+  transform: translateY(0);
+}
+
+.btn-download span {
+  font-size: 1.5rem;
+}
+
+.estado-info {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+}
+
+.estado-info p {
+  margin: 0;
+  color: #856404;
+  font-size: 1rem;
+}
+
+/* Responsive turno */
+@media (max-width: 400px) {
+  .turno-container {
+    padding: 15px;
+  }
+
+  .ticket-body .value {
+    font-size: 2rem;
+  }
+
+  .btn-download {
+    font-size: 1rem;
+    padding: 12px 25px;
+  }
+}

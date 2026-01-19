@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Su Turno</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+</head>
+<body class="qr-body">
+  <div class="container qr-container">
+    <header>
+      <h1>El seu torn ha sigut generat</h1>
+    </header>
+
+    <main class="qr-content">
+      <div class="turno-info">
+        <div class="turno-label">TORN</div>
+        <div class="turno-numero" id="turno-numero">-</div>
+        <div class="pin-label">PIN</div>
+        <div class="pin-numero" id="pin-numero">----</div>
+      </div>
+
+      <div class="qr-section">
+        <p class="qr-instruction">Escanege el codi QR per guardar el seu torn al mòbil</p>
+        <div id="qrcode"></div>
+      </div>
+
+      <div class="timer-section">
+        <p id="timer-text">Aquesta pantalla tornarà a l'inici en <span id="countdown">60</span> segons</p>
+        <button id="btn-listo" class="btn-primary">Ja tinc el meu torn</button>
+      </div>
+    </main>
+
+    <footer>
+      <p>Presente el seu torn i PIN quan el criden</p>
+    </footer>
+  </div>
+
+  <script src="/js/qr.js"></script>
+</body>
+</html>

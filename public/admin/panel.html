@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin - Panell</title>
+  <link rel="stylesheet" href="/css/admin.css">
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="admin-body">
+  <div class="admin-container">
+    <header class="admin-header">
+      <h1>Panel de Administración</h1>
+      <div class="header-actions">
+        <button id="btn-reset-turnos" class="btn-reset">
+          <i data-lucide="rotate-ccw"></i>
+          <span>Resetear Turnos</span>
+        </button>
+        <button id="btn-logout" class="btn-logout">
+          <i data-lucide="log-out"></i>
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="gestion">Gestió de cues</button>
+      <button class="tab-btn" data-tab="config">Configuració</button>
+    </div>
+
+    <!-- TAB: GESTIÓN DE COLAS -->
+    <div id="tab-gestion" class="tab-content active">
+      <h2>Gestió de Cues</h2>
+
+      <div id="ventanillas-gestion" class="ventanillas-gestion">
+        <!-- Se cargarán dinámicamente -->
+      </div>
+    </div>
+
+    <!-- TAB: CONFIGURACIÓN -->
+    <div id="tab-config" class="tab-content">
+      <h2>Configuració</h2>
+
+      <div class="config-sections">
+        <!-- TRÁMITES -->
+        <section class="config-section">
+          <div class="section-header">
+            <h3>Tràmits</h3>
+            <button class="btn-add" id="btn-add-tramite">
+              <i data-lucide="plus-circle"></i>
+              <span>Nou tràmit</span>
+            </button>
+          </div>
+
+          <div id="tramites-list" class="items-list">
+            <!-- Se cargarán dinámicamente -->
+          </div>
+        </section>
+
+        <!-- VENTANILLAS -->
+        <section class="config-section">
+          <div class="section-header">
+            <h3>Finestres</h3>
+            <button class="btn-add" id="btn-add-ventanilla">
+              <i data-lucide="plus-circle"></i>
+              <span>Nova finestra</span>
+            </button>
+          </div>
+
+          <div id="ventanillas-list" class="items-list">
+            <!-- Se cargarán dinámicamente -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALES -->
+
+  <!-- Modal Trámite -->
+  <div id="modal-tramite" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2 id="modal-tramite-title">Nou tràmit</h2>
+      <div id="error-tramite" class="modal-error" style="display: none;"></div>
+      <form id="form-tramite">
+        <input type="hidden" id="tramite-id">
+
+        <div class="form-group">
+          <label for="tramite-nombre">Nom</label>
+          <input type="text" id="tramite-nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tramite-codigo">Codi</label>
+          <input type="text" id="tramite-codigo" required maxlength="2" style="text-transform: uppercase;">
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="tramite-activo" checked>
+            Actiu
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="cerrarModal('modal-tramite')">Cancel·lar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Ventanilla -->
+  <div id="modal-ventanilla" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2 id="modal-ventanilla-title">Nova finestra</h2>
+      <div id="error-ventanilla" class="modal-error" style="display: none;"></div>
+      <form id="form-ventanilla">
+        <input type="hidden" id="ventanilla-id">
+
+        <div class="form-group">
+          <label for="ventanilla-nombre">Nom</label>
+          <input type="text" id="ventanilla-nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label>Tràmits que poden atendre</label>
+          <div id="ventanilla-tramites" class="checkbox-group">
+            <!-- Se cargarán dinámicamente -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="ventanilla-activa" checked>
+            Activa
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="cerrarModal('modal-ventanilla')">Cancel·lar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Modal de Confirmación -->
+  <div id="confirm-modal" class="confirm-modal">
+    <div class="confirm-modal-content">
+      <div class="confirm-modal-header">
+        <div class="confirm-modal-icon warning">⚠️</div>
+        <h3 class="confirm-modal-title" id="confirm-modal-title">Confirmar acción</h3>
+      </div>
+      <div class="confirm-modal-body">
+        <p class="confirm-modal-message" id="confirm-modal-message"></p>
+      </div>
+      <div class="confirm-modal-footer">
+        <button class="confirm-modal-btn confirm-modal-btn-cancel" id="confirm-cancel">Cancelar</button>
+        <button class="confirm-modal-btn confirm-modal-btn-confirm" id="confirm-ok">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin-panel.js"></script>
+</body>
+
+</html>

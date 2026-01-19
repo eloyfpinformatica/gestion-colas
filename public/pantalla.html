@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pantalla de torns</title>
+  <link rel="stylesheet" href="/css/pantalla.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+</head>
+<body>
+  <div class="pantalla-container">
+    <header class="pantalla-header">
+      <h1>TORNS EN ATENCIÓ</h1>
+      <div class="reloj" id="reloj"></div>
+    </header>
+
+    <main class="pantalla-main">
+      <!-- Sección de llamada destacada -->
+      <div class="ultima-llamada" id="ultima-llamada" style="display: none;">
+        <div class="llamada-icon">📢</div>
+        <div class="llamada-content">
+          <div class="llamada-turno" id="llamada-turno">A-042</div>
+          <div class="llamada-ventanilla">
+            <span>→</span>
+            <span id="llamada-ventanilla-nombre">FINESTRA 1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de ventanillas -->
+      <div class="ventanillas-grid" id="ventanillas-grid">
+        <!-- Las ventanillas se cargarán aquí dinámicamente -->
+      </div>
+
+      <!-- Contadores de cola -->
+      <div class="contadores-section">
+        <h2>En espera</h2>
+        <div class="contadores-grid" id="contadores-grid">
+          <!-- Los contadores se cargarán aquí -->
+        </div>
+      </div>
+    </main>
+
+    <footer class="pantalla-footer">
+      <p>Espere a que el criden • Presente presente el seu torn i PIN en la finestra</p>
+    </footer>
+  </div>
+
+  <script src="/js/pantalla.js"></script>
+</body>
+</html>

@@ -1,7 +1,6 @@
 {
   "name": "gestion-colas",
   "version": "1.0.0",
-  "description": "Sistema de gestión de colas IES María Enríquez",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

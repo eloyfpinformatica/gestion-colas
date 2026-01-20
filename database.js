@@ -1,9 +1,27 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = process.env.RAILWAY_VOLUME_MOUNT_PATH 
-  ? `${process.env.RAILWAY_VOLUME_MOUNT_PATH}/database.sqlite`
-  : path.join(__dirname, 'database.sqlite');
+// Detectar si estamos en Railway con volumen montado
+let dbPath;
+
+if (process.env.RAILWAY_VOLUME_MOUNT_PATH) {
+  // En Railway, usar el volumen
+  const volumePath = process.env.RAILWAY_VOLUME_MOUNT_PATH;
+  
+  // Asegurarse de que el directorio existe
+  if (!fs.existsSync(volumePath)) {
+    fs.mkdirSync(volumePath, { recursive: true });
+  }
+  
+  dbPath = path.join(volumePath, 'database.sqlite');
+  console.log('📁 Usando volumen Railway:', dbPath);
+} else {
+  // En desarrollo local
+  dbPath = path.join(__dirname, 'database.sqlite');
+  console.log('📁 Usando BD local:', dbPath);
+}
+
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error al conectar con la base de datos:', err);

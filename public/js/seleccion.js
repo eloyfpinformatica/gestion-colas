@@ -63,6 +63,19 @@ async function seleccionarTramite(tramite) {
   }
 }
 
+// Conectar Socket.io
+const socket = io(API_URL);
+
+socket.on('connect', () => {
+  console.log('Conectado a Socket.io');
+});
+
+// Escuchar cambios en trámites
+socket.on('tramites-actualizado', () => {
+  console.log('Trámites actualizados, recargando...');
+  cargarTramites();
+});
+
 // Inicializar
 document.addEventListener('DOMContentLoaded', () => {
   cargarTramites();

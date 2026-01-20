@@ -54,6 +54,9 @@ router.post("/tramites", authMiddleware, async (req, res) => {
       [nombre, codigo.toUpperCase()],
     );
 
+    const io = req.app.get('io');
+    io.emit('tramites-actualizado');
+
     res.json({ id: result.lastID, nombre, codigo: codigo.toUpperCase() });
   } catch (error) {
     if (error.message.includes("UNIQUE")) {
@@ -75,6 +78,9 @@ router.put("/tramites/:id", authMiddleware, async (req, res) => {
       [nombre, codigo.toUpperCase(), activo ? 1 : 0, id],
     );
 
+    const io = req.app.get('io');
+    io.emit('tramites-actualizado');
+
     res.json({ success: true });
   } catch (error) {
     console.error("Error en actualitzar el tràmit:", error);
@@ -90,15 +96,19 @@ router.put("/tramites/:id", authMiddleware, async (req, res) => {
 
 // DELETE /api/admin/tramites/:id
 router.delete('/tramites/:id', authMiddleware, async (req, res) => {
-    try {
-      const { id } = req.params;
-      await dbHelpers.run('DELETE FROM tramites WHERE id = ?', [id]);
-      res.json({ success: true });
-    } catch (error) {
-      console.error('Error en eliminar el tràmit:', error);
-      res.status(500).json({ error: `Error en eliminar el tràmit: ${error.message}` });
-    }
-  });
+  try {
+    const { id } = req.params;
+    await dbHelpers.run('DELETE FROM tramites WHERE id = ?', [id]);
+
+    const io = req.app.get('io');
+    io.emit('tramites-actualizado');
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error en eliminar el tràmit:', error);
+    res.status(500).json({ error: `Error en eliminar el tràmit: ${error.message}` });
+  }
+});
 
 // ========== VENTANILLAS ==========
 
@@ -163,50 +173,50 @@ router.post("/ventanillas", authMiddleware, async (req, res) => {
 
 // PUT /api/admin/ventanillas/:id
 router.put('/ventanillas/:id', authMiddleware, async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { nombre, activa, tramite_ids } = req.body;
-  
+  try {
+    const { id } = req.params;
+    const { nombre, activa, tramite_ids } = req.body;
+
+    await dbHelpers.run(
+      'UPDATE ventanillas SET nombre = ?, activa = ? WHERE id = ?',
+      [nombre, activa ? 1 : 0, id]
+    );
+
+    // Actualizar trámites asignados
+    if (tramite_ids !== undefined) {
+      // Eliminar asignaciones anteriores
       await dbHelpers.run(
-        'UPDATE ventanillas SET nombre = ?, activa = ? WHERE id = ?',
-        [nombre, activa ? 1 : 0, id]
+        'DELETE FROM ventanilla_tramites WHERE ventanilla_id = ?',
+        [id]
       );
-  
-      // Actualizar trámites asignados
-      if (tramite_ids !== undefined) {
-        // Eliminar asignaciones anteriores
+
+      // Insertar nuevas asignaciones
+      for (let tramiteId of tramite_ids) {
         await dbHelpers.run(
-          'DELETE FROM ventanilla_tramites WHERE ventanilla_id = ?',
-          [id]
+          'INSERT INTO ventanilla_tramites (ventanilla_id, tramite_id) VALUES (?, ?)',
+          [id, tramiteId]
         );
-  
-        // Insertar nuevas asignaciones
-        for (let tramiteId of tramite_ids) {
-          await dbHelpers.run(
-            'INSERT INTO ventanilla_tramites (ventanilla_id, tramite_id) VALUES (?, ?)',
-            [id, tramiteId]
-          );
-        }
       }
-  
-      res.json({ success: true });
-    } catch (error) {
-      console.error('Error en actualitzar la finestra:', error);
-      res.status(500).json({ error: `Error en actualitzar la finestra: ${error.message}` });
     }
-  });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error en actualitzar la finestra:', error);
+    res.status(500).json({ error: `Error en actualitzar la finestra: ${error.message}` });
+  }
+});
 
 // DELETE /api/admin/ventanillas/:id
 router.delete('/ventanillas/:id', authMiddleware, async (req, res) => {
-    try {
-      const { id } = req.params;
-      await dbHelpers.run('DELETE FROM ventanillas WHERE id = ?', [id]);
-      res.json({ success: true });
-    } catch (error) {
-      console.error('Error en eliminar la finestra:', error);
-      res.status(500).json({ error: `Error en eliminar la finestra: ${error.message}` });
-    }
-  });
+  try {
+    const { id } = req.params;
+    await dbHelpers.run('DELETE FROM ventanillas WHERE id = ?', [id]);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error en eliminar la finestra:', error);
+    res.status(500).json({ error: `Error en eliminar la finestra: ${error.message}` });
+  }
+});
 
 // ========== GESTIÓN DE COLAS ==========
 
@@ -383,15 +393,15 @@ router.post("/rellamar", authMiddleware, async (req, res) => {
 router.post('/reset-turnos', authMiddleware, async (req, res) => {
   try {
     await dbHelpers.run('DELETE FROM turnos');
-    
+
     const io = req.app.get('io');
     io.emit('pantalla-actualizada');
-    
+
     res.json({ success: true, mensaje: 'Todos los turnos han sido eliminados' });
   } catch (error) {
     console.error('Error al resetear turnos:', error);
     res.status(500).json({ error: `Error al resetear turnos: ${error.message}` });
   }
-}); 
+});
 
 module.exports = router;
